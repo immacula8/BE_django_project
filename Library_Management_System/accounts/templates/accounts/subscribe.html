@@ -1,0 +1,54 @@
+{% load static %}
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h2>Choose Your Plan</h2>
+<p>Upgrade to Premium to enjoy extra benefits:</p>
+
+<div class="plans-container">
+    <!-- Basic Plan -->
+    <div class="plan-card">
+        <h3>Basic</h3>
+        <p>Free access with limited features.</p>
+        <ul>
+            <li>Borrow up to 2 books</li>
+            <li>Access standard titles</li>
+        </ul>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="subscription_plan" value="Basic">
+            <button type="submit">Select Basic</button>
+        </form>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan-card premium">
+        <h3>Premium</h3>
+        <p>Enjoy more books and exclusive titles.</p>
+        <ul>
+            <li>Borrow up to 5 books</li>
+            <li>Access exclusive titles</li>
+        </ul>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="subscription_plan" value="Premium">
+            <button type="submit">Select Premium</button>
+        </form>
+    </div>
+
+    <!-- Unlimited Plan -->
+    <div class="plan-card unlimited">
+        <h3>Unlimited</h3>
+        <p>Unlimited borrowing for book lovers.</p>
+        <ul>
+            <li>Borrow unlimited books</li>
+            <li>Access all exclusive titles</li>
+        </ul>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="subscription_plan" value="Unlimited">
+            <button type="submit">Select Unlimited</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

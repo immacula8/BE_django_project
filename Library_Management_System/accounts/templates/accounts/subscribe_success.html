@@ -1,0 +1,8 @@
+{% load static %}
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h2>Subscription Updated!</h2>
+<p>You are now on the <strong>{{ plan }}</strong> plan.</p>
+<a href="{% url 'home' %}">Go back to Home</a>
+{% endblock %}
