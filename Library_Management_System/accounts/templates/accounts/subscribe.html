@@ -5,6 +5,13 @@
 <h2>Choose Your Plan</h2>
 <p>Upgrade to Premium to enjoy extra benefits:</p>
 
+<!-- Messages -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-warning">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
 <div class="plans-container">
     <!-- Basic Plan -->
     <div class="plan-card">

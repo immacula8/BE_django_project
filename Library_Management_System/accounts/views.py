@@ -1,11 +1,9 @@
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .forms import SubscriptionForm
+from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect
+from django.contrib.auth.admin import UserAdmin
+from .forms import SubscriptionForm, CustomUserCreationForm, CustomAuthenticationForm
+
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('subscription_plan', 'country', 'profile_photo')}),
@@ -55,3 +53,9 @@ def subscribe_view(request):
     else:
         form = SubscriptionForm(initial={"plan": user.subscription_plan})
     return render(request, "accounts/subscribe.html", {"form": form})
+
+@login_required
+def dashboard_view(request):
+    # Instead of showing borrowed books (Borrow model is removed),
+    # we just show user info and their subscription plan
+    return render(request, "accounts/dashboard.html", {"user": request.user})

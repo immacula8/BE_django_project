@@ -1,7 +1,7 @@
-from django.urls import path, include
-from .views import borrow_book_view, borrow_history_view
+from django.urls import path
+from .views import read_book_view
 
 urlpatterns = [
-    path('borrow/', borrow_book_view, name='borrow_book'),
-    path('history/', borrow_history_view, name='borrow_history'),
+    path('read/<int:book_id>/', read_book_view, name='read_book'),
+
 ]

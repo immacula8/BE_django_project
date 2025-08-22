@@ -47,20 +47,3 @@ class LibraryMember(models.Model):
     def __str__(self):
         return self.user.username
 
-class Borrow(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    book = models.ForeignKey("Book", on_delete=models.CASCADE)  # Use your existing Book model
-    borrowed_at = models.DateTimeField(default=timezone.now)
-    due_date = models.DateTimeField(blank=True, null=True)
-    returned = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        if not self.due_date:
-            self.due_date = self.borrowed_at + timedelta(days=14)
-        super().save(*args, **kwargs)
-
-    def is_overdue(self):
-        return timezone.now() > self.due_date and not self.returned
-
-    def __str__(self):
-        return f"{self.user.username} borrowed {self.book.title}"

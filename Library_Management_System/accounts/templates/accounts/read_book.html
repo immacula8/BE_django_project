@@ -1,0 +1,12 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h2>{{ book.title }}</h2>
+<p>By {{ book.author }}</p>
+
+<div class="book-content">
+  {{ book.content|linebreaks }}
+</div>
+
+<a href="{% url 'dashboard' %}">Back to Dashboard</a>
+{% endblock %}

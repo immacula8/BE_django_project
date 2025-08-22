@@ -1,26 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import BorrowForm
-from .models import Borrow
+from .models import Book
+from django.contrib import messages
 
 @login_required
-def borrow_book_view(request):
-    form = BorrowForm(request.POST or None)
-    if request.method == "POST" and form.is_valid():
-        borrow = form.save(commit=False)
-        borrow.user = request.user
-
-        # Reduce available copies of the book
-        borrow.book.copies_available -= 1
-        borrow.book.save()
-
-        borrow.save()
-        return redirect("borrow_history")  # We'll create this view next
-
-    return render(request, "books/borrow.html", {"form": form})
-
-@login_required
-def borrow_history_view(request):
-    borrows = Borrow.objects.filter(user=request.user)
-    return render(request, "books/borrow_history.html", {"borrows": borrows})
-
+def read_book_view(request, book_id):
+    book = Book.objects.get(id=book_id)
+    
+    if request.user.subscription_plan not in ["premium", "unlimited"]:
+        # Show a friendly message
+        messages.warning(
+            request,
+            "You cannot read online unless you have a Premium or Unlimited plan. Upgrade below."
+        )
+        return redirect("subscribe")  # Redirect to the subscription page
+    
+    # If user is premium/unlimited, show the book
+    return render(request, "books/read_online.html", {"book": book})

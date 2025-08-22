@@ -1,0 +1,26 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h2>Welcome, {{ request.user.username }}</h2>
+
+<h3>Books Available to You</h3>
+<ul>
+  {% for book in available_books %}
+    <li>
+      <strong>{{ book.title }}</strong> by {{ book.author.name }}
+
+      {% if request.user.is_premium or request.user.is_unlimited %}
+        - <a href="{% url 'read_book' book.id %}">Read Online</a>
+      {% else %}
+        - Upgrade to Premium to read online
+      {% endif %}
+
+      {% if request.user.is_unlimited %}
+        - <a href="{% url 'download_book' book.id %}">Download</a>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li>No books available yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
