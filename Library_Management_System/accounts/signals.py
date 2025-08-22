@@ -9,3 +9,8 @@ from .models import Subscription
 def create_library_member(sender, instance, created, **kwargs):
     if created:
         LibraryMember.objects.create(user=instance)
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_user_subscription(sender, instance, created, **kwargs):
+    if created:
+        Subscription.objects.create(user=instance)
