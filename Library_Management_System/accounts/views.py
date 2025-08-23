@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.admin import UserAdmin
 from .forms import SubscriptionForm, CustomUserCreationForm, CustomAuthenticationForm
 from .models import Subscription
+from django.contrib import messages
+from django.utils import timezone
+from datetime import timedelta
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -74,4 +77,24 @@ def dashboard_view(request):
 @login_required
 def subscription_detail(request):
     subscription = getattr(request.user, "subscription", None)
+    plan = subscription.plan_type if subscription else "free"
     return render(request, "accounts/subscription_detail.html", {"subscription": subscription})
+
+
+@login_required
+def upgrade(request, plan):
+    if request.method == "POST":
+        payment_method = request.POST.get("payment_method")
+        subscription, created = Subscription.objects.get_or_create(user=request.user)
+
+        if payment_method:
+            # Update subscription record (not user anymore)
+            subscription.plan_type = plan
+            subscription.save()
+
+            messages.success(request, f"Successfully upgraded to {plan}!")
+            return redirect("book_list")
+        else:
+            messages.error(request, "Payment failed. Try again.")
+
+    return render(request, "accounts/upgrade.html", {"plan": plan})

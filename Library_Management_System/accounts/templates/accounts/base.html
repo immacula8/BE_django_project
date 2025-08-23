@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    <!-- Subscription Banner (always visible on every page) -->
+    {% if user.is_authenticated %}
+        <div style="background: #f0f0f0; padding: 10px; text-align: center; font-weight: bold;">
+            You are in 
+            {% if user.subscription_plan %}
+                {{ user.subscription_plan|title }}
+            {% else %}
+                Free
+            {% endif %}
+            mode
+        </div>
+    {% endif %}
+
     <nav>
         <div class="nav-left">
             <a href="{% url 'home' %}">Home</a>
@@ -15,7 +28,13 @@
         </div>
         <div class="nav-right">
             {% if user.is_authenticated %}
-                Current Plan: <strong>{{ user.subscription_plan }}</strong>
+                Current Plan: <strong>
+                    {% if user.subscription_plan %}
+                        {{ user.subscription_plan|title }}
+                    {% else %}
+                        Free
+                    {% endif %}
+                </strong>
             {% endif %}
         </div>
     </nav>
@@ -35,7 +54,13 @@
                     {% endif %}
                     <h3>{{ user.username }}</h3>
                     <p>{{ user.email }}</p>
-                    <p>Plan: {{ user.subscription_plan }}</p>
+                    <p>Plan: 
+                        {% if user.subscription_plan %}
+                            {{ user.subscription_plan|title }}
+                        {% else %}
+                            Free
+                        {% endif %}
+                    </p>
                 </div>
             {% else %}
                 <p>Please <a href="{% url 'login' %}">login</a></p>
@@ -44,4 +69,3 @@
     </div>
 </body>
 </html>
-

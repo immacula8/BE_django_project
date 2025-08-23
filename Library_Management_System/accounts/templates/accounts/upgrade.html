@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upgrade Subscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .method {
+            margin-bottom: 20px;
+        }
+        .method label {
+            display: block;
+            font-weight: bold;
+        }
+        .method input[type="text"],
+        .method input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upgrade to {{ plan|title }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="plan" value="{{ plan }}">
+
+            <div class="method">
+                <label>Choose Payment Method:</label>
+                <select name="payment_method" required>
+                    <option value="">-- Select --</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="card">Credit/Debit Card</option>
+                    <option value="bank">Bank Transfer</option>
+                </select>
+            </div>
+
+            <!-- PayPal -->
+            <div class="method">
+                <label>Email (for PayPal)</label>
+                <input type="text" name="paypal_email" placeholder="example@paypal.com">
+            </div>
+
+            <!-- Card -->
+            <div class="method">
+                <label>Card Number</label>
+                <input type="number" name="card_number" placeholder="1234 5678 9012 3456">
+                <label>Expiry</label>
+                <input type="text" name="expiry" placeholder="MM/YY">
+                <label>CVV</label>
+                <input type="number" name="cvv" placeholder="123">
+            </div>
+
+            <!-- Bank Transfer -->
+            <div class="method">
+                <label>Account Number</label>
+                <input type="number" name="account_number" placeholder="1234567890">
+                <label>Bank Name</label>
+                <input type="text" name="bank_name" placeholder="Your Bank">
+            </div>
+
+            <button type="submit" class="btn">Pay & Upgrade</button>
+        </form>
+    </div>
+</body>
+</html>

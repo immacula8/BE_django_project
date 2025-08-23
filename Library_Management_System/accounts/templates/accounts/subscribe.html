@@ -116,14 +116,14 @@
                 <h2>Premium</h2>
                 <p>Read up to 10 books per month</p>
                 <p class="price">$10 / month</p>
-                <a href="#payment" class="btn">Upgrade</a>
+                <a href="{% url 'upgrade' 'premium' %}" class="btn">Subscribe Now</a>
             </div>
 
             <div class="plan">
                 <h2>Unlimited</h2>
                 <p>Read all books without limits</p>
-                <p class="price">$100 / month</p>
-                <a href="#payment" class="btn">Upgrade</a>
+                <p class="price">$100 / yearly</p>
+                <a href="{% url 'upgrade' 'unlimited' %}" class="btn">Subscribe Now</a>
             </div>
         </div>
 

@@ -3,6 +3,15 @@
 {% block content %}
 <h1>Library</h1>
 
+<!-- Show Current Subscription -->
+<p>
+  {% if request.user.subscription %}
+     <strong>Your Current Plan:</strong> {{ request.user.subscription.plan_type|title }}
+  {% else %}
+     <strong>Your Current Plan:</strong> Free
+  {% endif %}
+</p>
+
 <!-- Go Back Button -->
 <p><a class="btn" href="javascript:history.back()">⬅ Go Back</a></p>
 
@@ -25,3 +34,4 @@
   {% endfor %}
 </div>
 {% endblock %}
+
