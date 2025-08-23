@@ -1,0 +1,34 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<article class="detail">
+  <header>
+    <h1>{{ book.title }}</h1>
+    <p class="muted">by {{ book.author.name }}</p>
+  </header>
+
+  {% if book.cover %}<img src="{{ book.cover.url }}" class="detail-cover">{% endif %}
+
+  <h3>About this book</h3>
+  <p>{{ book.preview_text|linebreaks }}</p>
+
+  <div class="actions">
+    {% if user.is_authenticated %}
+      {% if plan_type == "free" %}
+        <p class="warn">You’re on Free. Preview only.</p>
+        <a class="btn" href="{% url 'subscribe' %}">Upgrade to read full →</a>
+      {% elif plan_type == "premium" %}
+        <a class="btn" href="{% url 'read_book' book.pk %}">Read Full (counts toward 5/month)</a>
+        <a class="btn-outline" href="{% url 'add_to_reading_list' book.pk %}">Save to Reading List</a>
+      {% else %}
+        <a class="btn" href="{% url 'read_book' book.pk %}">Read Full</a>
+        {% if book.file %}
+          <a class="btn-outline" href="{% url 'download_book' book.pk %}">Download</a>
+        {% endif %}
+        <a class="btn-outline" href="{% url 'add_to_reading_list' book.pk %}">Save to Reading List</a>
+      {% endif %}
+    {% else %}
+      <a class="btn" href="{% url 'login' %}">Login to continue</a>
+    {% endif %}
+  </div>
+</article>
+{% endblock %}

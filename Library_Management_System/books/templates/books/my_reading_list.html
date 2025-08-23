@@ -1,0 +1,14 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h2>My Reading List</h2>
+<ul>
+  {% for e in entries %}
+    <li>
+      <a href="{% url 'book_detail' e.book.pk %}">{{ e.book.title }}</a>
+      <span class="muted">by {{ e.book.author.name }}</span>
+    </li>
+  {% empty %}
+    <li>No saved books yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<h2>Submit Your Book</h2>
+<p>Work with us! Choose either a yearly Unlimited fee or 20% revenue share.</p>
+<form method="post" enctype="multipart/form-data" class="form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn" type="submit">Submit</button>
+</form>
+{% endblock %}

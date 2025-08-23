@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.admin import UserAdmin
 from .forms import SubscriptionForm, CustomUserCreationForm, CustomAuthenticationForm
+from .models import Subscription
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -38,20 +39,30 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
-def home_view(request):
+@login_required
+def home(request):
     return render(request, "accounts/home.html")
 
 @login_required
 def subscribe_view(request):
-    user = request.user
+    try:
+        subscription = request.user.subscription
+    except Subscription.DoesNotExist:
+        subscription = Subscription(user=request.user)
+
     if request.method == "POST":
-        form = SubscriptionForm(request.POST)
+        form = SubscriptionForm(request.POST, instance=subscription)
         if form.is_valid():
-            user.subscription_plan = form.cleaned_data['plan']
-            user.save()
-            return render(request, "accounts/subscribe_success.html", {"plan": user.subscription_plan})
+            plan_type = form.cleaned_data["plan_type"]
+            auto_renew = form.cleaned_data["auto_renew"]
+
+            # start subscription for 30 days
+            subscription.start_subscription(plan_type, duration_days=30, auto_renew=auto_renew)
+
+            return redirect("subscription_detail")
     else:
-        form = SubscriptionForm(initial={"plan": user.subscription_plan})
+        form = SubscriptionForm(instance=subscription)
+
     return render(request, "accounts/subscribe.html", {"form": form})
 
 @login_required
@@ -59,3 +70,8 @@ def dashboard_view(request):
     # Instead of showing borrowed books (Borrow model is removed),
     # we just show user info and their subscription plan
     return render(request, "accounts/dashboard.html", {"user": request.user})
+
+@login_required
+def subscription_detail(request):
+    subscription = getattr(request.user, "subscription", None)
+    return render(request, "accounts/subscription_detail.html", {"subscription": subscription})

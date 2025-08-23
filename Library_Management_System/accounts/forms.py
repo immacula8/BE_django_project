@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser
+from .models import Subscription
 
 # Registration form
 class CustomUserCreationForm(UserCreationForm):
@@ -16,10 +17,18 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(label="Username or Email")
 
-class SubscriptionForm(forms.Form):
-    PLAN_CHOICES = [
-        ('FREE', 'Free'),
-        ('PREMIUM', 'Premium'),
-        ('UNLIMITED', 'Unlimited'),
-    ]
-    plan = forms.ChoiceField(choices=PLAN_CHOICES, widget=forms.RadioSelect)
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Subscription
+        fields = ["plan_type", "auto_renew"]
+
+    plan_type = forms.ChoiceField(
+        choices=Subscription.PLAN_CHOICES,
+        widget=forms.RadioSelect,
+        label="Choose a Plan"
+    )
+
+    auto_renew = forms.BooleanField(
+        required=False,
+        label="Enable Auto Debit (Auto Renew Monthly)"
+    )

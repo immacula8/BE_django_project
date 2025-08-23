@@ -1,0 +1,10 @@
+
+{% extends "accounts/base.html" %}
+{% block content %}
+<article class="reading">
+  <h1>{{ book.title }}</h1>
+  <div class="prose">
+    {{ book.full_text|linebreaks }}
+  </div>
+</article>
+{% endblock %}

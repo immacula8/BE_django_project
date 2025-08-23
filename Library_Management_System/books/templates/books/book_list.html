@@ -1,0 +1,27 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<h1>Library</h1>
+
+<!-- Go Back Button -->
+<p><a class="btn" href="javascript:history.back()">⬅ Go Back</a></p>
+
+<!-- Submit Book Button -->
+<p><a class="btn" href="{% url 'submit_book' %}">Author? Submit your book →</a></p>
+
+<div class="grid">
+  {% for b in books %}
+  <div class="card">
+    {% if b.cover %}
+      <img src="{{ b.cover.url }}" alt="{{ b.title }}" class="cover">
+    {% endif %}
+    <h3><a href="{% url 'book_detail' b.pk %}">{{ b.title }}</a></h3>
+    <p class="muted">by {{ b.author.name }}</p>
+    <p>{{ b.preview_text|truncatechars:140 }}</p>
+    <a class="link" href="{% url 'book_detail' b.pk %}">View details</a>
+  </div>
+  {% empty %}
+  <p>No books yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

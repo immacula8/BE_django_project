@@ -1,61 +1,160 @@
-{% load static %}
-{% extends "accounts/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            margin: 0;
+            padding: 0;
+        }
 
-{% block content %}
-<h2>Choose Your Plan</h2>
-<p>Upgrade to Premium to enjoy extra benefits:</p>
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            text-align: center;
+        }
 
-<!-- Messages -->
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-warning">{{ message }}</div>
-  {% endfor %}
-{% endif %}
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
 
-<div class="plans-container">
-    <!-- Basic Plan -->
-    <div class="plan-card">
-        <h3>Basic</h3>
-        <p>Free access with limited features.</p>
-        <ul>
-            <li>Borrow up to 2 books</li>
-            <li>Access standard titles</li>
-        </ul>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="subscription_plan" value="Basic">
-            <button type="submit">Select Basic</button>
-        </form>
+        .plans {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .plan {
+            flex: 1;
+            min-width: 250px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .plan:hover {
+            border-color: #4CAF50;
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .plan h2 {
+            margin-bottom: 15px;
+            color: #222;
+        }
+
+        .plan p {
+            font-size: 15px;
+            color: #555;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #4CAF50;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .payment-options {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .payment-options h3 {
+            margin-bottom: 10px;
+        }
+
+        .payment-method {
+            margin-bottom: 10px;
+        }
+
+        .autopay {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Plan</h1>
+        <p>Unlock unlimited reading by upgrading your subscription</p>
+        <div class="plans">
+            
+            <div class="plan">
+                <h2>Free</h2>
+                <p>Preview only</p>
+                <p class="price">$0 / month</p>
+                <a href="#" class="btn">Current Plan</a>
+            </div>
+
+            <div class="plan">
+                <h2>Premium</h2>
+                <p>Read up to 10 books per month</p>
+                <p class="price">$10 / month</p>
+                <a href="#payment" class="btn">Upgrade</a>
+            </div>
+
+            <div class="plan">
+                <h2>Unlimited</h2>
+                <p>Read all books without limits</p>
+                <p class="price">$100 / month</p>
+                <a href="#payment" class="btn">Upgrade</a>
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div id="payment" class="payment-options">
+            <h3>Choose Payment Method</h3>
+            <form>
+                <div class="payment-method">
+                    <input type="radio" id="paypal" name="payment" value="paypal">
+                    <label for="paypal">PayPal</label>
+                </div>
+
+                <div class="payment-method">
+                    <input type="radio" id="card" name="payment" value="card">
+                    <label for="card">Credit/Debit Card</label>
+                </div>
+
+                <div class="payment-method">
+                    <input type="radio" id="bank" name="payment" value="bank">
+                    <label for="bank">Bank Transfer</label>
+                </div>
+
+                <div class="autopay">
+                    <input type="checkbox" id="auto" name="auto">
+                    <label for="auto">Enable Auto Debit (Recurring Payment)</label>
+                </div>
+
+                <br>
+                <button type="submit" class="btn">Confirm & Pay</button>
+            </form>
+        </div>
     </div>
-
-    <!-- Premium Plan -->
-    <div class="plan-card premium">
-        <h3>Premium</h3>
-        <p>Enjoy more books and exclusive titles.</p>
-        <ul>
-            <li>Borrow up to 5 books</li>
-            <li>Access exclusive titles</li>
-        </ul>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="subscription_plan" value="Premium">
-            <button type="submit">Select Premium</button>
-        </form>
-    </div>
-
-    <!-- Unlimited Plan -->
-    <div class="plan-card unlimited">
-        <h3>Unlimited</h3>
-        <p>Unlimited borrowing for book lovers.</p>
-        <ul>
-            <li>Borrow unlimited books</li>
-            <li>Access all exclusive titles</li>
-        </ul>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="subscription_plan" value="Unlimited">
-            <button type="submit">Select Unlimited</button>
-        </form>
-    </div>
-</div>
-{% endblock %}
+</body>
+</html>

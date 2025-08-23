@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "accounts.apps.AccountsConfig",
     'books',
-    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 TIME_ZONE = "Africa/Lagos"
 USE_TZ = True
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 

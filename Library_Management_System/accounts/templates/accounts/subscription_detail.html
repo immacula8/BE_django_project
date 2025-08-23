@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <h2>Your Subscription</h2>
+  {% if subscription %}
+    <p>Plan: {{ subscription.get_plan_type_display }}</p>
+    <p>Monthly Fee: ${{ subscription.monthly_fee }}</p>
+    <p>Auto Renew: {{ subscription.auto_renew|yesno:"Enabled,Disabled" }}</p>
+    <p>Expiry: {{ subscription.subscription_expiry }}</p>
+  {% else %}
+    <p>You do not have a subscription yet.</p>
+  {% endif %}
+</div>
+{% endblock %}
