@@ -146,3 +146,5 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
 }
+
+ALLOWED_HOSTS = ['*']  # for testing, later replace '*' with your deployed URL
