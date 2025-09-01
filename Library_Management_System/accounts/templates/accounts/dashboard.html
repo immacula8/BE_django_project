@@ -1,20 +1,23 @@
 {% extends "accounts/base.html" %}
-
 {% block content %}
-<h2>Welcome, {{ request.user.username }}</h2>
+<div class="card">
+  <h2>Welcome, {{ request.user.username }}</h2>
+  <p style="margin-top:6px;">Subscription: <strong>{{ request.user.current_plan|title }}</strong></p>
+</div>
 
-<h3>Books Available to You</h3>
-<ul>
+<div style="height:16px"></div>
+
+<div class="card">
+  <h3>Books Available to You</h3>
+  <ul>
   {% for book in available_books %}
     <li>
       <strong>{{ book.title }}</strong> by {{ book.author.name }}
-
       {% if request.user.is_premium or request.user.is_unlimited %}
         - <a href="{% url 'read_book' book.id %}">Read Online</a>
       {% else %}
-        - Upgrade to Premium to read online
+        - <a href="{% url 'subscribe' %}">Upgrade to read online</a>
       {% endif %}
-
       {% if request.user.is_unlimited %}
         - <a href="{% url 'download_book' book.id %}">Download</a>
       {% endif %}
@@ -22,5 +25,6 @@
   {% empty %}
     <li>No books available yet.</li>
   {% endfor %}
-</ul>
+  </ul>
+</div>
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends "accounts/base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Your Comments</h2>
+  <form method="post" action="{% url 'add_comment' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn" type="submit">Post Comment</button>
+  </form>
+</div>
+
+<div style="height:12px"></div>
+
+<div class="card">
+  <h3>My previous comments</h3>
+  <ul>
+  {% for c in comments %}
+    <li>
+      <small>{{ c.created_at|date:"M d, Y H:i" }}</small>
+      <p>{{ c.content }}</p>
+      {% if c.reply %}
+        <div style="margin-left:12px; border-left:2px solid #eee; padding-left:10px;">
+          <small>Reply: {{ c.replied_at|date:"M d, Y H:i" }}</small>
+          <p>{{ c.reply }}</p>
+        </div>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li>No comments yet. Try posting one above.</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

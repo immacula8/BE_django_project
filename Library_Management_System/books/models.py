@@ -1,4 +1,3 @@
- # books/models.py
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -20,13 +19,14 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
     isbn = models.CharField(max_length=13, unique=True)
     published_date = models.DateField()
-    copies_available = models.PositiveIntegerField()  # can keep if you still want inventory
+    copies_available = models.PositiveIntegerField()
     cover = models.ImageField(upload_to="covers/", blank=True, null=True)
-
-    # Content
     preview_text = models.TextField(blank=True)   # visible to Free
     full_text = models.TextField(blank=True)      # full content for reading online
     file = models.FileField(upload_to="books/files/", blank=True, null=True)  # for Unlimited downloads
+    description = models.TextField(default="No description available")
+    category = models.CharField(max_length=100, default="General")
+    uploaded_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.title} by {self.author}"
@@ -40,7 +40,29 @@ class ReadingList(models.Model):
         unique_together = ("user", "book")
 
     def __str__(self):
-        return f"{self.user} saved {self.book}"
+        return f"{self.user} favorited {self.book}"
+    
+class ReadingHistory(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    last_page_read = models.IntegerField(default=0)
+    progress = models.FloatField(default=0.0)  # percentage
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} reading {self.book.title}"
+    
+class Review(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
+    rating = models.IntegerField(default=1)  # 1-5 stars
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.book.title} ({self.rating})"
+
+
 
 class BookAccess(models.Model):
     """

@@ -18,6 +18,11 @@
 <!-- Submit Book Button -->
 <p><a class="btn" href="{% url 'submit_book' %}">Author? Submit your book →</a></p>
 
+<!-- Admin-only: Add Book -->
+{% if request.user.is_staff %}
+  <p><a class="btn" href="{% url 'add_book' %}">Add Book (admin)</a></p>
+{% endif %}
+
 <div class="grid">
   {% for b in books %}
   <div class="card">

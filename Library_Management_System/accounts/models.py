@@ -14,6 +14,29 @@ class CustomUser(AbstractUser):
     profile_photo = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
 
+    @property
+    def is_premium(self):
+        # prefer the Subscription object if present; fall back to the user field
+        sub = getattr(self, "subscription", None)
+        if sub:
+            return sub.plan_type == "premium"
+        return (self.subscription_plan or "").lower() == "premium"
+
+    @property
+    def is_unlimited(self):
+        sub = getattr(self, "subscription", None)
+        if sub:
+            return sub.plan_type == "unlimited"
+        return (self.subscription_plan or "").lower() == "unlimited"
+
+    @property
+    def current_plan(self):
+        sub = getattr(self, "subscription", None)
+        if sub:
+            return sub.plan_type
+        return (self.subscription_plan or "free").lower()
+
+
     def __str__(self):
         return self.username
 
@@ -76,3 +99,14 @@ class Subscription(models.Model):
     def __str__(self):
         renew_status = "Auto" if self.auto_renew else "Manual"
         return f"{self.user.username} - {self.plan_type} ({renew_status})"
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comments")
+    content = models.TextField()
+    reply = models.TextField(blank=True, null=True)
+    replied_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name="comment_replies", on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    replied_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Comment by {self.user.username} at {self.created_at}"

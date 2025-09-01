@@ -1,4 +1,3 @@
-# books/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, Http404
 from django.contrib.auth.decorators import login_required
@@ -8,7 +7,13 @@ from accounts.models import Subscription
 from .models import Book, ReadingList, BookAccess, AuthorSubmission
 from .forms import AuthorSubmissionForm  
 from .forms import BookForm
-
+from rest_framework import generics
+from .serializers import BookSerializer
+from .models import Author, Book
+from .serializers import AuthorSerializer, BookSerializer
+from django.db.models import Avg
+from .models import Review
+from django.contrib.admin.views.decorators import staff_member_required
 
 def _get_subscription(user) -> Subscription:
     sub, _ = Subscription.objects.get_or_create(user=user, defaults={"plan_type": "free"})
@@ -23,7 +28,20 @@ def book_detail(request, pk):
     plan = None
     if request.user.is_authenticated:
         plan = _get_subscription(request.user).plan_type
-    return render(request, "books/book_detail.html", {"book": book, "plan_type": plan})
+
+    # handle review posting
+    if request.method == "POST" and request.user.is_authenticated:
+        rating = int(request.POST.get("rating", 0))
+        comment = request.POST.get("comment", "").strip()
+        if 1 <= rating <= 5:
+            Review.objects.create(user=request.user, book=book, rating=rating, comment=comment)
+            messages.success(request, "Thank you for your review.")
+            return redirect("book_detail", pk=pk)
+        else:
+            messages.error(request, "Please submit a rating between 1 and 5.")
+
+    avg_rating = book.reviews.aggregate(avg=Avg("rating"))["avg"] or 0
+    return render(request, "books/book_detail.html", {"book": book, "plan_type": plan, "avg_rating": avg_rating})
 
 @login_required
 def read_book(request, pk):
@@ -96,12 +114,31 @@ def submit_book(request):
         form = AuthorSubmissionForm()
     return render(request, "books/submit_book.html", {"form": form})
 
+@staff_member_required
 def add_book(request):
     if request.method == "POST":
         form = BookForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("book_list")  # go back to book list
+            return redirect("book_list")
     else:
         form = BookForm()
     return render(request, "books/add_book.html", {"form": form})
+
+
+class BookListAPIView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class AuthorListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+# ✅ Retrieve + Update + Delete Author
+class AuthorDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+class BookDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
