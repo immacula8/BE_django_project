@@ -1,0 +1,83 @@
+[
+{
+    "model": "books.author",
+    "pk": 1,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 2,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 3,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 4,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 5,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 6,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 7,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 8,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 9,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+}
+]

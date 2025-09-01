@@ -1,0 +1,137 @@
+[
+{
+    "model": "books.author",
+    "pk": 1,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 2,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 3,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 4,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 5,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 6,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 7,
+    "fields": {
+        "name": "William S. Vincent",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 8,
+    "fields": {
+        "name": "Eric Matthes",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.author",
+    "pk": 9,
+    "fields": {
+        "name": "Geoffrey Immaculate",
+        "birth_date": null,
+        "biography": null
+    }
+},
+{
+    "model": "books.book",
+    "pk": 4,
+    "fields": {
+        "title": "Django for Beginners",
+        "author": 7,
+        "isbn": "9781735467207",
+        "published_date": "2023-01-01",
+        "copies_available": 5,
+        "cover": "",
+        "preview_text": "",
+        "full_text": "",
+        "file": "",
+        "description": "No description available",
+        "category": "General",
+        "uploaded_at": "2025-09-01T23:24:34.318Z"
+    }
+},
+{
+    "model": "books.book",
+    "pk": 5,
+    "fields": {
+        "title": "Python Crash Course",
+        "author": 8,
+        "isbn": "9781593279288",
+        "published_date": "2022-05-01",
+        "copies_available": 3,
+        "cover": "",
+        "preview_text": "",
+        "full_text": "",
+        "file": "",
+        "description": "No description available",
+        "category": "General",
+        "uploaded_at": "2025-09-01T23:24:34.640Z"
+    }
+},
+{
+    "model": "books.book",
+    "pk": 6,
+    "fields": {
+        "title": "Learning REST APIs",
+        "author": 9,
+        "isbn": "9780000000001",
+        "published_date": "2025-09-01",
+        "copies_available": 2,
+        "cover": "",
+        "preview_text": "",
+        "full_text": "",
+        "file": "",
+        "description": "No description available",
+        "category": "General",
+        "uploaded_at": "2025-09-01T23:24:35.035Z"
+    }
+}
+]
