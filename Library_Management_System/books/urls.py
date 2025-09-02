@@ -16,10 +16,4 @@ urlpatterns = [
     path("my-list/", views.my_reading_list, name="my_reading_list"),
     path("submit/", views.submit_book, name="submit_book"),
     path("add/", views.add_book, name="add_book"),
-
-    # API views (🚨 no extra "api/" here)
-    path("", BookListAPIView.as_view(), name="api-book-list"),
-    path("<int:pk>/", BookDetailAPIView.as_view(), name="api-book-detail"),
-    path("authors/", AuthorListCreateAPIView.as_view(), name="api-authors"),
-    path("authors/<int:pk>/", AuthorDetailAPIView.as_view(), name="api-author-detail"),
 ]

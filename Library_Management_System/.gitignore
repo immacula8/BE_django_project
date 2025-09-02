@@ -8,7 +8,7 @@ env/
 venv/
 
 # Database
-*.sqlite3
+db.sqlite3
 
 # Logs
 *.log
