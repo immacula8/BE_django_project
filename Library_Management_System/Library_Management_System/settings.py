@@ -11,9 +11,37 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,  # Render Postgres uses SSL
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+# Allow both local and Render hostnames
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "library-api-5dsu.onrender.com",
+]
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +53,6 @@ SECRET_KEY = 'django-insecure-l5g*acl-@aex-mr*&$0l+x^_=(k#ke&@^*ag4ae1h11=mf3q+1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -51,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'Library_Management_System.urls'
@@ -76,10 +104,15 @@ WSGI_APPLICATION = 'Library_Management_System.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'library_db_0co9',
+        'USER': 'library_db_0co9_user',
+        'PASSWORD': 'okofSWNmyaHS9vAmdlA7TzMsJrJBphZR',
+        'HOST': 'dpg-d2r2d5v5r7bs73bf6jr0-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
@@ -144,4 +177,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ['*']  # for testing, later replace '*' with your deployed URL
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'library-api-5dsu.onrender.com']
+
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
